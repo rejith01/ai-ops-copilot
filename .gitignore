@@ -21,7 +21,6 @@ __pycache__/
 htmlcov/
 
 # Alembic
-migrations/versions/*.py
 
 # Logs
 *.log

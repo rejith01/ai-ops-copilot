@@ -10,7 +10,18 @@ from src.infrastructure.database.models.incident_model import IncidentModel
 from src.infrastructure.database.models.investigation_model import InvestigationModel
 from src.infrastructure.database.models.evidence_model import EvidenceModel
 from src.infrastructure.database.models.root_cause_hypothesis_model import RootCauseHypothesisModel
-
+from src.infrastructure.database.models.knowledge_document_model import (
+    KnowledgeDocumentModel,
+)
+from src.infrastructure.database.models.runbook_model import (
+    RunbookModel,
+)
+from src.infrastructure.database.models.execution_plan_model import (
+    ExecutionPlanModel,
+)
+from src.infrastructure.database.models.rollback_plan_model import (
+    RollbackPlanModel,
+)
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

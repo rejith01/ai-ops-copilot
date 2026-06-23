@@ -9,7 +9,9 @@ from src.application.use_cases.create_incident_use_case import (
 from src.infrastructure.repositories.incident_repository import (
     IncidentRepositorySQLAlchemy,
 )
-
+from src.application.use_cases.get_incident_use_case import (
+    GetIncidentUseCase,
+)
 
 def create_incident_use_case(
     session: AsyncSession,
@@ -25,4 +27,16 @@ def create_incident_use_case(
 
     return CreateIncidentUseCase(
         service,
+    )
+
+def get_incident_use_case(
+    session: AsyncSession,
+) -> GetIncidentUseCase:
+
+    repository = IncidentRepositorySQLAlchemy(
+        session,
+    )
+
+    return GetIncidentUseCase(
+        repository,
     )

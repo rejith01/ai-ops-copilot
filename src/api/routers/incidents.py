@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.schemas import CreateIncidentRequest
@@ -7,6 +8,8 @@ from src.application.commands.create_incident_command import (
 )
 from src.application.factories.create_incident_factory import (
     create_incident_use_case,
+    get_incident_use_case,
+
 )
 from src.infrastructure.database.dependencies import (
     get_db_session,
@@ -36,5 +39,30 @@ async def create_incident(
         result = await use_case.execute(
             command
         )
+
+        return result
+    
+@router.get(
+    "/incidents/{incident_id}"
+)
+async def get_incident(
+    incident_id: str,
+):
+
+    async for session in get_db_session():
+
+        use_case = get_incident_use_case(
+            session,
+        )
+
+        result = await use_case.execute(
+            incident_id,
+        )
+
+        if result is None:
+            raise HTTPException(
+                status_code=404,
+                detail="Incident not found",
+            )
 
         return result

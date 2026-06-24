@@ -16,3 +16,9 @@ class CreateEvidenceRequest(BaseModel):
     source: str
     content: str
     confidence_score: float
+
+class CreateHypothesisRequest(BaseModel):
+    investigation_id: str
+
+    description: str
+    confidence_score: float

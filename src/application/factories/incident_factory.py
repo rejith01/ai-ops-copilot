@@ -36,7 +36,17 @@ from src.application.use_cases.create_evidence_use_case import (
 from src.infrastructure.repositories.evidence_repository import (
     EvidenceRepositorySQLAlchemy,
 )
+from src.application.services.create_hypothesis_service import (
+    CreateHypothesisService,
+)
 
+from src.application.use_cases.create_hypothesis_use_case import (
+    CreateHypothesisUseCase,
+)
+
+from src.infrastructure.repositories.hypothesis_repository import (
+    HypothesisRepositorySQLAlchemy,
+)
 def create_incident_use_case(
     session: AsyncSession,
 ) -> CreateIncidentUseCase:
@@ -94,5 +104,21 @@ def create_evidence_use_case(
     )
 
     return CreateEvidenceUseCase(
+        service,
+    )
+
+def create_hypothesis_use_case(
+    session: AsyncSession,
+) -> CreateHypothesisUseCase:
+
+    repository = HypothesisRepositorySQLAlchemy(
+        session,
+    )
+
+    service = CreateHypothesisService(
+        repository,
+    )
+
+    return CreateHypothesisUseCase(
         service,
     )

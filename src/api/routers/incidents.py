@@ -6,6 +6,7 @@ from src.api.schemas import (
     CreateIncidentRequest,
     CreateInvestigationRequest,
     CreateEvidenceRequest,
+    CreateHypothesisRequest,
 )
 from src.application.commands.create_incident_command import (
     CreateIncidentCommand,
@@ -18,6 +19,7 @@ from src.application.factories.incident_factory import (
     get_incident_use_case,
     create_investigation_use_case,
     create_evidence_use_case,
+    create_hypothesis_use_case,
 
 )
 from src.infrastructure.database.dependencies import (
@@ -28,6 +30,9 @@ from src.application.commands.create_evidence_command import (
     CreateEvidenceCommand,
 )
 
+from src.application.commands.create_hypothesis_command import (
+    CreateHypothesisCommand,
+)
 router = APIRouter()
 
 
@@ -123,6 +128,29 @@ async def create_evidence(
 
         result = await use_case.execute(
             command,
+        )
+
+        return result
+    
+@router.post("/hypotheses")
+async def create_hypothesis(
+    request: CreateHypothesisRequest,
+):
+
+    async for session in get_db_session():
+
+        use_case = create_hypothesis_use_case(
+            session,
+        )
+
+        command = CreateHypothesisCommand(
+            investigation_id=request.investigation_id,
+            description=request.description,
+            confidence_score=request.confidence_score,
+        )
+
+        result = await use_case.execute(
+            command
         )
 
         return result

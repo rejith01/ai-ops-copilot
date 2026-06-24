@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.api.schemas import (
     CreateIncidentRequest,
     CreateInvestigationRequest,
+    CreateEvidenceRequest,
 )
 from src.application.commands.create_incident_command import (
     CreateIncidentCommand,
@@ -16,10 +17,15 @@ from src.application.factories.incident_factory import (
     create_incident_use_case,
     get_incident_use_case,
     create_investigation_use_case,
+    create_evidence_use_case,
 
 )
 from src.infrastructure.database.dependencies import (
     get_db_session,
+)
+
+from src.application.commands.create_evidence_command import (
+    CreateEvidenceCommand,
 )
 
 router = APIRouter()
@@ -89,6 +95,30 @@ async def create_investigation(
 
         command = CreateInvestigationCommand(
             incident_id=request.incident_id,
+        )
+
+        result = await use_case.execute(
+            command,
+        )
+
+        return result
+    
+@router.post("/evidence")
+async def create_evidence(
+    request: CreateEvidenceRequest,
+):
+
+    async for session in get_db_session():
+
+        use_case = create_evidence_use_case(
+            session,
+        )
+
+        command = CreateEvidenceCommand(
+            investigation_id=request.investigation_id,
+            source=request.source,
+            content=request.content,
+            confidence_score=request.confidence_score,
         )
 
         result = await use_case.execute(

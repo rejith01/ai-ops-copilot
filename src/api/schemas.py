@@ -9,3 +9,10 @@ class CreateIncidentRequest(BaseModel):
 
 class CreateInvestigationRequest(BaseModel):
     incident_id: str
+
+class CreateEvidenceRequest(BaseModel):
+    investigation_id: str
+
+    source: str
+    content: str
+    confidence_score: float

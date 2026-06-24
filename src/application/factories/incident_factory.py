@@ -25,6 +25,18 @@ from src.infrastructure.repositories.investigation_repository import (
     InvestigationRepositorySQLAlchemy,
 )
 
+from src.application.services.create_evidence_service import (
+    CreateEvidenceService,
+)
+
+from src.application.use_cases.create_evidence_use_case import (
+    CreateEvidenceUseCase,
+)
+
+from src.infrastructure.repositories.evidence_repository import (
+    EvidenceRepositorySQLAlchemy,
+)
+
 def create_incident_use_case(
     session: AsyncSession,
 ) -> CreateIncidentUseCase:
@@ -66,5 +78,21 @@ def create_investigation_use_case(
     )
 
     return CreateInvestigationUseCase(
+        service,
+    )
+
+def create_evidence_use_case(
+    session: AsyncSession,
+) -> CreateEvidenceUseCase:
+
+    repository = EvidenceRepositorySQLAlchemy(
+        session,
+    )
+
+    service = CreateEvidenceService(
+        repository,
+    )
+
+    return CreateEvidenceUseCase(
         service,
     )

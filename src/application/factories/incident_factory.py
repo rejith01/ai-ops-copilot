@@ -13,6 +13,18 @@ from src.application.use_cases.get_incident_use_case import (
     GetIncidentUseCase,
 )
 
+from src.application.services.create_investigation_service import (
+    CreateInvestigationService,
+)
+
+from src.application.use_cases.create_investigation_use_case import (
+    CreateInvestigationUseCase,
+)
+
+from src.infrastructure.repositories.investigation_repository import (
+    InvestigationRepositorySQLAlchemy,
+)
+
 def create_incident_use_case(
     session: AsyncSession,
 ) -> CreateIncidentUseCase:
@@ -39,4 +51,20 @@ def get_incident_use_case(
 
     return GetIncidentUseCase(
         repository,
+    )
+
+def create_investigation_use_case(
+    session: AsyncSession,
+) -> CreateInvestigationUseCase:
+
+    repository = InvestigationRepositorySQLAlchemy(
+        session,
+    )
+
+    service = CreateInvestigationService(
+        repository,
+    )
+
+    return CreateInvestigationUseCase(
+        service,
     )

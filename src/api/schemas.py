@@ -6,3 +6,6 @@ class CreateIncidentRequest(BaseModel):
     description: str
     service_name: str
     severity: str
+
+class CreateInvestigationRequest(BaseModel):
+    incident_id: str

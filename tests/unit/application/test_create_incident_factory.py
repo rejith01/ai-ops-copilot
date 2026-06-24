@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock
 
-from src.application.factories.create_incident_factory import (
+from src.application.factories.incident_factory import (
     create_incident_use_case,
 )
 from src.application.use_cases.create_incident_use_case import (

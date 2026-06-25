@@ -7,6 +7,8 @@ from src.api.schemas import (
     CreateInvestigationRequest,
     CreateEvidenceRequest,
     CreateHypothesisRequest,
+    CreateExecutionPlanRequest,
+    CreateRollbackPlanRequest,
 )
 from src.application.commands.create_incident_command import (
     CreateIncidentCommand,
@@ -20,7 +22,8 @@ from src.application.factories.incident_factory import (
     create_investigation_use_case,
     create_evidence_use_case,
     create_hypothesis_use_case,
-
+    create_execution_plan_use_case,
+    create_rollback_plan_use_case,
 )
 from src.infrastructure.database.dependencies import (
     get_db_session,
@@ -32,6 +35,12 @@ from src.application.commands.create_evidence_command import (
 
 from src.application.commands.create_hypothesis_command import (
     CreateHypothesisCommand,
+)
+from src.application.commands.create_execution_plan_command import (
+    CreateExecutionPlanCommand,
+)
+from src.application.commands.create_rollback_plan_command import (
+    CreateRollbackPlanCommand,
 )
 router = APIRouter()
 
@@ -147,6 +156,51 @@ async def create_hypothesis(
             investigation_id=request.investigation_id,
             description=request.description,
             confidence_score=request.confidence_score,
+        )
+
+        result = await use_case.execute(
+            command
+        )
+
+        return result
+    
+@router.post("/execution-plans")
+async def create_execution_plan(
+    request: CreateExecutionPlanRequest,
+):
+
+    async for session in get_db_session():
+
+        use_case = create_execution_plan_use_case(
+            session,
+        )
+
+        command = CreateExecutionPlanCommand(
+            title=request.title,
+            description=request.description,
+            actions=request.actions,
+        )
+
+        result = await use_case.execute(
+            command
+        )
+
+        return result
+    
+@router.post("/rollback-plans")
+async def create_rollback_plan(
+    request: CreateRollbackPlanRequest,
+):
+
+    async for session in get_db_session():
+
+        use_case = create_rollback_plan_use_case(
+            session,
+        )
+
+        command = CreateRollbackPlanCommand(
+            execution_plan_id=request.execution_plan_id,
+            steps=request.steps,
         )
 
         result = await use_case.execute(

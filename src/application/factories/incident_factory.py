@@ -47,6 +47,31 @@ from src.application.use_cases.create_hypothesis_use_case import (
 from src.infrastructure.repositories.hypothesis_repository import (
     HypothesisRepositorySQLAlchemy,
 )
+
+from src.application.services.create_execution_plan_service import (
+    CreateExecutionPlanService,
+)
+
+from src.application.use_cases.create_execution_plan_use_case import (
+    CreateExecutionPlanUseCase,
+)
+
+from src.infrastructure.repositories.execution_plan_repository import (
+    ExecutionPlanRepositorySQLAlchemy,
+)
+
+from src.application.services.create_rollback_plan_service import (
+    CreateRollbackPlanService,
+)
+
+from src.application.use_cases.create_rollback_plan_use_case import (
+    CreateRollbackPlanUseCase,
+)
+
+from src.infrastructure.repositories.rollback_plan_repository import (
+    RollbackPlanRepositorySQLAlchemy,
+)
+
 def create_incident_use_case(
     session: AsyncSession,
 ) -> CreateIncidentUseCase:
@@ -120,5 +145,37 @@ def create_hypothesis_use_case(
     )
 
     return CreateHypothesisUseCase(
+        service,
+    )
+
+def create_execution_plan_use_case(
+    session: AsyncSession,
+) -> CreateExecutionPlanUseCase:
+
+    repository = ExecutionPlanRepositorySQLAlchemy(
+        session,
+    )
+
+    service = CreateExecutionPlanService(
+        repository,
+    )
+
+    return CreateExecutionPlanUseCase(
+        service,
+    )
+
+def create_rollback_plan_use_case(
+    session: AsyncSession,
+) -> CreateRollbackPlanUseCase:
+
+    repository = RollbackPlanRepositorySQLAlchemy(
+        session,
+    )
+
+    service = CreateRollbackPlanService(
+        repository,
+    )
+
+    return CreateRollbackPlanUseCase(
         service,
     )

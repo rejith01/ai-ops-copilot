@@ -22,3 +22,14 @@ class CreateHypothesisRequest(BaseModel):
 
     description: str
     confidence_score: float
+
+class CreateExecutionPlanRequest(BaseModel):
+    title: str
+    description: str
+
+    actions: list[str]
+
+class CreateRollbackPlanRequest(BaseModel):
+    execution_plan_id: str
+
+    steps: list[str]
